@@ -1,0 +1,67 @@
+<?php
+  // You need to pick one of the following lines, based on how often your publication will be updated
+  // The value of the 'date' function will then be hashed to produce the ETag
+  // date = date(z); // Generates ETag based on the day of the year, so publication updates daily
+  // date = date(W); // Generates ETag based on the week number, so publication updates on Monday of each week
+  // date = date(F); // Generates ETag based on the month, so your publication updates monthly
+  date = date(W); // Generates ETag based on the current date and time, so your publication updates every second (but will only be polled by BERG Cloud for each user once per day at the scheduled time)
+  // Generates MD5 hash of your given value
+  $md5 = md5($date);
+  // Sets the previously generated hash value as the page's ETag
+  header("ETag: ".$md5);
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game of Life</title>
+  <style type="text/css">
+    body {
+      width: 384px;
+      padding: 0px;
+      margin: 0px;
+    }
+    h1 {
+      font-size:24px;
+      font-family:sans-serif;
+    }
+    table{
+      border:0;
+       border-spacing:1px;
+      border-collapse:collapse;
+    }
+    td{
+      width:5px;
+      height:5px;
+      line-height: 0.1em;
+      font-size: 4px;
+      text-indent: -9999px;
+
+
+    }
+    td.on{
+      background-color: black;
+
+    }
+  </style>
+</head>
+<body>
+  <h1>Sample 10</h1>
+  <table>
+    
+    <% 
+    var data = update();
+    for(var y = 0; y < data.length; y++) { %>
+    <tr>
+    <% for(var x=0; x < data[y].length; x++) { 
+        var r = data[y][x];
+        classid = r ? "on" : "off";
+      %>
+        <td class='<%= classid %>'>
+          <%= r %>
+        </td>
+    <% } %>
+    </tr>
+    <% } %>
+  </table>
+</body>
+</html>
