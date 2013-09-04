@@ -4,7 +4,7 @@
   // date = date(z); // Generates ETag based on the day of the year, so publication updates daily
   // date = date(W); // Generates ETag based on the week number, so publication updates on Monday of each week
   // date = date(F); // Generates ETag based on the month, so your publication updates monthly
-  date = date(W); // Generates ETag based on the current date and time, so your publication updates every second (but will only be polled by BERG Cloud for each user once per day at the scheduled time)
+  date = date(z); // Generates ETag based on the current date and time, so your publication updates every second (but will only be polled by BERG Cloud for each user once per day at the scheduled time)
   // Generates MD5 hash of your given value
   $md5 = md5($date);
   // Sets the previously generated hash value as the page's ETag
@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Game of Life</title>
+  <title>Game of Life/ Pedometer</title>
   <style type="text/css">
     body {
       width: 384px;
@@ -45,7 +45,7 @@
   </style>
 </head>
 <body>
-  <h1>Sample 10</h1>
+  <h1>Sample 11</h1>
   <table>
     
     <% 
