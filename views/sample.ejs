@@ -1,4 +1,4 @@
-<?php
+<? php
   // You need to pick one of the following lines, based on how often your publication will be updated
   // The value of the 'date' function will then be hashed to produce the ETag
   // date = date(z); // Generates ETag based on the day of the year, so publication updates daily
@@ -8,8 +8,8 @@
   // Generates MD5 hash of your given value
   $md5 = md5($date);
   // Sets the previously generated hash value as the page's ETag
-  header("ETag: ".$md5);
-?>
+  header("ETag:".$md5);
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,17 +39,61 @@
 
     }
     td.on{
-      background-color: black;
+      background-color: red;
 
     }
   </style>
-</head>
-<body>
-  <h1>Sample 11</h1>
+
+
+  
+  
+
+
+  <body>
+  <h1>Pedometer</h1>
+
+
+  <script type="text/javascript" src="ejs_production.js"></script>
+
+  <script>
+
+
+   <script type="text/javascript" src="async.js"></script>
+   <script type="text/javascript">
+   <script type="text/javascript">
+   <script src="/Users/JennyHo/node-littleprinter-final/server.js "> 
+  </script>
+
+  <script type="text/javascript"
+src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js">
+</script>
+
   <table>
-    
-    <% 
-    var data = update();
+
+      
+      <% var json = '{"result":true,"count":7462}',
+    obj = JSON.parse(json);
+
+
+    %>Count = 
+    <%=obj.count%>
+    <%
+
+
+    var data; 
+// Generate a random board for first time players
+  if ( ! data ) {
+    data = [];
+    var rows = 50, columns = rows;
+    }
+
+  for(var y = 0; y < rows; y++){
+      data [y] = [];
+    for(var x = 0; x < columns; x++){
+      data[y][x]  = (Math.round(Math.random()));
+    }
+  } 
+
     for(var y = 0; y < data.length; y++) { %>
     <tr>
     <% for(var x=0; x < data[y].length; x++) { 
@@ -63,5 +107,8 @@
     </tr>
     <% } %>
   </table>
-</body>
+
+
+
+  </body>
 </html>

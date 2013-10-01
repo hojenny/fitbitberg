@@ -1,8 +1,8 @@
-var express = require('express'),
+ var express = require('express'),
     handler = require('./handler.js'),
-    littleprinter = require('littleprinter'),
-    gol = require('./gameoflife.js');
- //   fitbit =require('./node_modules/fitbit-js/example/test.js');
+    littleprinter = require('littleprinter');
+   	gol = require('./gameoflife.js');
+ // fitbit =require('./node_modules/fitbit-js/example/test.js');
 
 
 var app = express();
@@ -19,120 +19,61 @@ app.set('view engine', 'ejs', 'html'); // in this example I am using ejs, feel f
 fitbitkey = '5eb133f3d5c4423582d1546f50ce3151';
 fitbitsecret = '8d7e169145b543a2b29759ea4b3c498b';
 
-var steps = false;
-
-function getuseractivity (token, callback) {
+//Getting data from fitbit for today's date
+function getuseractivity (token) {
 	console.log('called server/getuseractivity');
 
 	var fitbitClient = require('fitbit-js')(fitbitkey, fitbitsecret);
 
- 	fitbitClient.apiCall(
- 		'GET', 
- 		'/user/-/activities/steps/date/today/1d.json',
-    	{ token: token },
-    	callback
+ 	fitbitClient.apiCall('GET','/user/-/activities/steps/date/today/1d.json',
+    	{token: token},
+    	function(err, resp, json) 
+    	{
+	      	if (err)  
+	      	{
+	      	return 0; 
+	      	} 
+	      	else 
+	      	{
+	      	console.log(JSON.stringify(json));
+	      	return json['activities-steps'][0].value;
+	      	}
+  		} 
   	);
-  	console.log("Kicked off api call");
-  	return;
 }
 
+//Updating app data for new data of oncoming dates
+ // app.locals.update = function(user, interval) {
+	// var data;
+	// console.log('called app.locals.update')
+	// var token = {oauth_token_secret: '2a867b77ab87eae0ae30d0d2f2c22726', oauth_token: '58a74a8f3ea41c7509004b113001ba81'};
+ // 	var steps = getuseractivity(token);
+ // 	console.log(steps);
+ // 	steps = false;
+// 	// Retrieve user/ row from database
 
-app.locals.update = function(user, interval, callback) {
-	var data;
-	console.log('called app.locals.update')
-	var token = {oauth_token_secret: '2a867b77ab87eae0ae30d0d2f2c22726', oauth_token: '58a74a8f3ea41c7509004b113001ba81'};
+// 	// Retrieve new data from pedometer api
+// 	getuseractivity(token, function(err, resp, json) {		
+// 		console.log("api returned");
+//   		if (!steps) {
+//   			clearTimeout(timer);
+//   			callback(response);
+//   		}
+
+//   		if (err) {
+//   			console.log(err);
+//   			steps = 1;
+//   		} else {
+//   			console.log(JSON.stringify(json));
+//   			steps = json['activities-steps'][0].value;
+//   		}
+// 	})
+ //}
 	
-	steps = false;
-	var timer = setTimeout(function() {
-
-		callback('it timed out!');
-		steps= true;
-	}, 10000);
-
-	getuseractivity(token, function(err, resp, json) {		
-		console.log("api returned");
-  		if (!steps) {
-  			clearTimeout(timer);
-  			callback(response);
-  		}
-  	
-  	
-
-
-  		if (err) {
-  			console.log(err);
-  			steps = 1;
-  		} else {
-  			console.log(JSON.stringify(json))
-  			steps = json['activities-steps'][0].value;
-  		}
-	})
-	};
-
-	
-		// console.log(steps);
-		setTimeout(
-		(function() {
-				console.log('waiting...');
-		}), 1000);
+	var data= 'activities-steps';
 	
 
-	console.log(steps);
-	
-	// Retrieve user/ row from database
-
-	// Retrieve new data from pedometer api
-
-	//I added this text//
-
-/*function loadScript(url, callback)
-{
-   // adding the script tag to the head as suggested before
-   var head = document.getElementsByTagName('head')[0];
-   var script = document.createElement('script');
-   script.type = 'text/javascript';
-   script.src = "/Users/JennyHo/node-littleprinter-final/node_modules/fitbit-js/example/test.js";
-
-   // then bind the event to the callback function 
-   // there are several events for cross browser compatibility
-  script.onreadystatechange = callback;   
-  script.onload = callback;
-
-   // fire the loading
-  head.appendChild(script);
-}
-	//added text ends here//
-
-	// Update data grid with pedometer data
-
-//	function gol.callback{
-//		$('#dg').datagrid({
-    	url:'/user/-/activities/steps/date/today/1d.json',
-    	this.cycle = function(){
-		var dying = [], born = []
-		grid.forEach(function(row, rowIndex) {
-			row.forEach(function(cell, cellIndex) {
-				var neighbors = getNeighbors(rowIndex, cellIndex)
-				var sum = neighbors.reduce(function(sum,coord){
-					return getCell(coord) + sum
-				}, 0)
-				if (sum < 2 || sum > 3) {
-					dying.push([rowIndex,cellIndex])
-				} else if(sum == 3 && cell ==0){
-					born.push([rowIndex, cellIndex])
-				}
-					
-			});
-		});
-	}
-    
-    $('#dg').datagrid('reload'); 
-	});
-		
-		
-
- */
-	// Generate a random board for first time players
+	//Generate a random board for first time players
 	if ( ! data ) {
 		data = [];
 		var rows = 50, columns = rows;
@@ -141,7 +82,7 @@ app.locals.update = function(user, interval, callback) {
 	for(var y = 0; y < rows; y++){
 		data[y] = [];
 		for(var x = 0; x < columns; x++){
-			data[y][x]  = (Math.round(Math.random()));
+			data[y][x]  = ('activities-steps');
 		}
 	}
 
@@ -153,18 +94,18 @@ app.locals.update = function(user, interval, callback) {
 	// Iterate game of life
 	
 	var often = 3600; // Seconds per iteration
-	var cycles = interval ? interval/often : 240;
+	var cycles = interval? interval/often : 240;
 	while (cycles) {
 		game.cycle();
 		cycles--;
 	}
-	data = game.grid;
+	 data = game.grid;
 
-	// Store data grid and update mod date
+	//Store data grid and update mod date
 
-	// Return data grid 
+	//Return data grid 
 	return data;
-}
+//}
 
 
 
