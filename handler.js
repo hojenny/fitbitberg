@@ -1,5 +1,6 @@
 var handler = { };
 
+
 // change this meta for your publication
 handler.meta = {
   "owner_email":"jenny@houseoflaudanum.com",
@@ -13,12 +14,36 @@ handler.meta = {
 },
  //use default edition handler
 handler.edition = undefined;
+handler.userdata=[[]];
 
 //use default sample handler
-handler.sample = undefined; 
+handler.sample = function(done) {
+  var e = null;
+  var obj = {};
+  obj.view = null;
+
+  var data = this.userdata(null);
+
+ 
+  // 	var data= arg1;
+ 	// var arg1= function(res){
+  // 	var steps = math.random(x);
+  	
+  // 	res.json;
+  // }
+
+  // var args= Array.
+  //need to connect to gameoflife.js
+
+  obj.meta = {
+    data: data,
+    user: 'Jenny',
+    foo: 'bar'
+  };
+  done(e, obj);
+}
+
 
 handler.stepperimage = undefined,
-
-//var html= new EJS({url: 'sample.ejs'}).render(data);
 
 module.exports = handler;
