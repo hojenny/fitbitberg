@@ -29,6 +29,7 @@ function getuseractivity (token) {
 	console.log('called server/getuseractivity');
 
 	var fitbitClient = require('fitbit-js')(fitbitkey, fitbitsecret);
+	console.log ('need fitbitkey and fitbitsecret')
 
  	fitbitClient.apiCall('GET','/user/-/activities/steps/date/today/1d.json',
     	{token: token},
@@ -49,9 +50,13 @@ function getuseractivity (token) {
 }
 
 function getuserdata(user) {
+	var token = {oauth_token_secret: '2a867b77ab87eae0ae30d0d2f2c22726', oauth_token: '58a74a8f3ea41c7509004b113001ba81'};
+ 	var steps = getuseractivity(token);
+ 	console.log(steps);
 	var data = [
     	[0,1,1,0],
-    	[1,1,1,1]
+    	[1,1,1,1],
+    	[0,1,1,0],
     ];
     return data;
 
